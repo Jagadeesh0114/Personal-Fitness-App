@@ -15,17 +15,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { location } = useRouterState();
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-border/50">
-        <div className="mx-auto max-w-3xl px-5 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-border/50 pt-[env(safe-area-inset-top)]">
+        <div className="mx-auto max-w-3xl px-4 h-14 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
             <div className="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center shadow-[0_0_15px_hsl(var(--primary))] ring-1 ring-primary/20">
               <img src={logo} alt="It's Time logo" className="h-full w-full object-cover scale-[1.25] object-center" />
             </div>
-            <span className="font-bold tracking-tight text-lg">It's Time</span>
+            <span className="font-bold tracking-tight text-base sm:text-lg">It's Time</span>
           </Link>
-          <Link to="/settings" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-            <Moon className="h-3.5 w-3.5" />
-            Coach Settings
+          <Link to="/settings" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 px-2 py-1">
+            <Moon className="h-4 w-4" />
+            <span className="text-[10px] uppercase tracking-wider font-semibold hidden xs:inline-block">Coach Settings</span>
           </Link>
         </div>
       </header>
