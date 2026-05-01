@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Activity, CalendarDays, Dumbbell, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const tabs = [
   { to: "/", label: "Dashboard", icon: Activity },
@@ -16,7 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="mx-auto max-w-3xl px-5 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <span className="h-7 w-7 rounded-lg bg-gradient-primary shadow-glow grid place-items-center text-primary-foreground font-bold text-xs">IT</span>
+            <img src={logo} alt="It's Time logo" width={28} height={28} className="h-7 w-7 drop-shadow-[0_0_8px_hsl(var(--primary)/0.4)]" />
             <span className="font-semibold tracking-tight">It's Time</span>
           </Link>
           <Link to="/settings" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
