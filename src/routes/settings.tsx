@@ -40,9 +40,9 @@ function SettingsPage() {
         <h2 className="font-semibold">Your stats</h2>
         <div className="grid grid-cols-2 gap-3">
           <Select label="Gender" value={d.gender} options={[["male","Male"],["female","Female"]]} onChange={(v) => update("gender", v as UserProfile["gender"])} />
-          <Num label="Age" value={d.age} onChange={(v) => update("age", v)} />
-          <Num label="Height (cm)" value={d.heightCm} onChange={(v) => update("heightCm", v)} />
-          <Num label="Weight (kg)" value={d.weightKg} onChange={(v) => update("weightKg", v)} step="0.1" />
+          <Num label="Age" value={d.age} onChange={(v) => update("age", v ?? d.age)} />
+          <Num label="Height (cm)" value={d.heightCm} onChange={(v) => update("heightCm", v ?? d.heightCm)} />
+          <Num label="Weight (kg)" value={d.weightKg} onChange={(v) => update("weightKg", v ?? d.weightKg)} step="0.1" />
         </div>
         <Select label="Activity" value={d.activity} options={[["sedentary","Sedentary"],["light","Light"],["moderate","Moderate"],["active","Active"]]} onChange={(v) => update("activity", v as ActivityLevel)} />
         <Select label="Goal" value={d.goal} options={(Object.keys(GOAL_LABEL) as Goal[]).map((g) => [g, GOAL_LABEL[g]])} onChange={(v) => update("goal", v as Goal)} />
