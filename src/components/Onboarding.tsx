@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import type { ActivityLevel, Gender, Goal, UserProfile } from "@/lib/fitness/types";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 interface Props {
   onComplete: (p: UserProfile) => void;
@@ -67,7 +68,7 @@ export function Onboarding({ onComplete }: Props) {
       <div className="w-full max-w-md">
         <div className="text-center mb-8 animate-fade-in">
           <div className="inline-flex items-center gap-2 mb-4">
-            <span className="h-9 w-9 rounded-xl bg-gradient-primary shadow-glow grid place-items-center text-primary-foreground font-bold">IT</span>
+            <img src={logo} alt="It's Time logo" width={36} height={36} className="h-9 w-9 drop-shadow-[0_0_10px_hsl(var(--primary)/0.45)]" />
             <span className="text-xl font-semibold tracking-tight">It's Time</span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
