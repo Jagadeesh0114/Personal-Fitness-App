@@ -192,4 +192,3 @@ function computeFlags(logs: Record<string, DayLog>, calTarget: number, proTarget
   void isDayCompleted; void calTarget;
   return flags;
 }
-}
