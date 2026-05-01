@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { useFitness, isDayCompleted, isDayMissed } from "@/hooks/use-fitness";
 import { storage, todayKey } from "@/lib/fitness/storage";
@@ -24,6 +24,7 @@ function CalendarPage() {
   });
   const [view, setView] = useState<"month" | "week">("month");
   const [selected, setSelected] = useState<string | null>(null);
+  const weekDays = buildWeek(new Date());
 
   if (!hydrated) return null;
   if (!profile || !targets) {
@@ -31,9 +32,6 @@ function CalendarPage() {
   }
 
   const monthLabel = cursor.toLocaleDateString(undefined, { month: "long", year: "numeric" });
-
-  // weekly summary: current ISO-ish week (Mon..Sun)
-  const weekDays = useMemo(() => buildWeek(new Date()), []);
   const weekStats = computeWeekStats(weekDays, logs, targets.calories, targets.proteinG);
 
   return (
