@@ -7,13 +7,8 @@ import { storage } from "@/lib/fitness/storage";
 import { cn } from "@/lib/utils";
 import { ChefHat, Dumbbell, Pencil, Save, RotateCcw } from "lucide-react";
 
-export const Route = createFileRoute("/plan")({
-  head: () => ({
-    meta: [
-      { title: "Plan — It's Time" },
-      { name: "description", content: "Hostel-friendly meals and a structured weekly workout split." },
-    ],
-  }),
+export const Route = createFileRoute("/plan")(
+  {
   component: PlanPage,
 });
 

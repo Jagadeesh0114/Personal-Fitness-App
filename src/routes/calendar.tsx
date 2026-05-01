@@ -4,16 +4,11 @@ import { AppShell } from "@/components/AppShell";
 import { useFitness, isDayCompleted, isDayMissed } from "@/hooks/use-fitness";
 import { storage, todayKey } from "@/lib/fitness/storage";
 import type { DayLog, Intensity } from "@/lib/fitness/types";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, GlassWater } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/calendar")({
-  head: () => ({
-    meta: [
-      { title: "Calendar — It's Time" },
-      { name: "description", content: "Track your daily calories, protein, and workouts." },
-    ],
-  }),
+export const Route = createFileRoute("/calendar")(
+  {
   component: CalendarPage,
 });
 
@@ -78,10 +73,11 @@ function CalendarPage() {
 
       <div className="mt-5 bg-gradient-card border border-border rounded-2xl p-5">
         <div className="font-semibold mb-3">Weekly Summary</div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           <SummaryCell label="Avg calories" value={weekStats.avgCal ? Math.round(weekStats.avgCal) : "—"} />
           <SummaryCell label="Avg protein" value={weekStats.avgPro ? `${Math.round(weekStats.avgPro)}g` : "—"} />
           <SummaryCell label="Workout %" value={`${weekStats.workoutPct}%`} />
+          <SummaryCell label="Avg water" value={weekStats.avgWater ? `${Math.round(weekStats.avgWater)}` : "—"} />
         </div>
       </div>
 
@@ -121,7 +117,7 @@ function MonthGrid({ cursor, logs, calTarget, proTarget, onPick }: {
             <button key={k} onClick={() => onPick(k)} className={cn(
               "aspect-square rounded-lg text-xs font-medium transition-all border",
               !inMonth && "opacity-30",
-              completed ? "bg-primary/20 border-primary text-primary" :
+              completed ? "bg-primary border-primary text-primary-foreground font-bold shadow-glow" :
                 missed ? "bg-destructive/10 border-destructive/30 text-destructive/80" :
                 "border-border hover:border-primary/50",
               isToday && "ring-2 ring-primary/60",
@@ -138,7 +134,7 @@ function MonthGrid({ cursor, logs, calTarget, proTarget, onPick }: {
 function Legend() {
   return (
     <div className="flex flex-wrap gap-3 mt-4 text-xs text-muted-foreground">
-      <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-primary/40 border border-primary" /> Completed</span>
+      <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-primary border border-primary" /> Completed</span>
       <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-destructive/20 border border-destructive/40" /> Missed</span>
       <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-border" /> Untracked</span>
     </div>
@@ -177,23 +173,21 @@ function DayEditor({ dateKey, onClose }: { dateKey: string; onClose: () => void 
           <Field label="Body weight (kg)" value={log.bodyWeightKg} onChange={(v) => setLog({ ...log, bodyWeightKg: v })} step="0.1" />
 
           <div>
+            <div className="text-xs text-muted-foreground mb-1.5 flex items-center gap-1"><GlassWater className="h-3 w-3" /> Water (glasses)</div>
+            <div className="flex items-center gap-2">
+              <input type="number" inputMode="numeric" min="0" max="20" value={log.waterGlasses ?? ""} placeholder="8"
+                onChange={(e) => setLog({ ...log, waterGlasses: e.target.value === "" ? undefined : Number(e.target.value) })}
+                className="w-full rounded-lg bg-background border border-border px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
+            </div>
+          </div>
+
+          <div>
             <div className="text-xs text-muted-foreground mb-1.5">Workout</div>
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => setLog({ ...log, workoutDone: true })} className={cn("rounded-lg border py-2.5 text-sm transition-all", log.workoutDone === true ? "border-primary bg-primary/15 text-primary" : "border-border")}>Completed</button>
               <button onClick={() => setLog({ ...log, workoutDone: false })} className={cn("rounded-lg border py-2.5 text-sm transition-all", log.workoutDone === false ? "border-destructive bg-destructive/15 text-destructive" : "border-border")}>Skipped</button>
             </div>
-          </div>
-
-          {log.workoutDone && (
-            <div>
-              <div className="text-xs text-muted-foreground mb-1.5">Intensity</div>
-              <div className="grid grid-cols-3 gap-2">
-                {(["light","medium","heavy"] as Intensity[]).map((i) => (
-                  <button key={i} onClick={() => setLog({ ...log, intensity: i })} className={cn("rounded-lg border py-2 text-xs capitalize transition-all", log.intensity === i ? "border-primary bg-primary/15 text-primary" : "border-border")}>{i}</button>
-                ))}
-              </div>
-            </div>
-          )}
+        </div>
         </div>
 
         <div className="flex gap-2 mt-6">
@@ -231,5 +225,6 @@ function computeWeekStats(week: Date[], logs: Record<string, DayLog>, _cal: numb
   const avgCal = present.length ? present.reduce((s, l) => s + (l.caloriesConsumed ?? 0), 0) / present.length : 0;
   const avgPro = present.length ? present.reduce((s, l) => s + (l.proteinG ?? 0), 0) / present.length : 0;
   const workoutPct = week.length ? Math.round((present.filter((l) => l.workoutDone).length / week.length) * 100) : 0;
-  return { avgCal, avgPro, workoutPct };
+  const avgWater = present.length ? present.reduce((s, l) => s + (l.waterGlasses ?? 0), 0) / present.length : 0;
+  return { avgCal, avgPro, workoutPct, avgWater };
 }
