@@ -47,7 +47,7 @@ const SLEEP_OPTIONS = [
 
 export function Onboarding({ onComplete }: Props) {
   const allProfiles = getAllProfiles();
-  const [step, setStep] = useState(allProfiles.length > 0 ? -1 : 0);
+  const [step, setStep] = useState(-1);
   const [loginMode, setLoginMode] = useState<"auth" | "login" | "signup">("auth");
   const [authUsername, setAuthUsername] = useState("");
   const [authPassword, setAuthPassword] = useState("");
